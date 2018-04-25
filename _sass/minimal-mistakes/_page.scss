@@ -75,7 +75,7 @@
   p,
   li,
   dl {
-    font-size: 1em;
+    font-size: $type-size-6;  /* Change the size of content font*/
   }
 
   /* paragraph indents */
