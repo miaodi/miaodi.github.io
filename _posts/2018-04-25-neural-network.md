@@ -19,11 +19,11 @@ Neural networks are typically organized in layers. Layers are made up of a numbe
 
 Here, we use the sigmoid function as activation function:
 
-$$h_\theta(z)=\frac{1}{1+e^{-z}},$$
+$$h(z)=\frac{1}{1+e^{-z}},$$
 
 which has a convenient derivative of:
 
-$$h_\theta(z)'=h_\theta(z)(1-h_\theta(z)).$$
+$$h'=h(z)(1-h(z)).$$
 
 We assume there are L layers of neural networks. We label nodes of layer $i$ as $\mathbf{a}^{(i)}$ and call them "activation units". The output of the $i^{th}$ layer is the input of the $i+1^{th}$ layer. In the input layer,
 
@@ -31,4 +31,18 @@ We assume there are L layers of neural networks. We label nodes of layer $i$ as 
 
  and in the output layer,
 
- $$\mathbf{a}^{(L)}:=\mathbf{y}.$$
+ $$\mathbf{a}^{(L)}:=\mathbf{y}^{pred}.$$
+
+ $\mathbf{a}^{(i)}$ can be solved in a forward propagation manner, as:
+
+  $$\begin{align*}
+  z&=\theta^{(i)}\cdot\mathbf{a}^{(i-1)}\\
+  \mathbf{a}^{i}&=h(z)
+  \end{align*}.$$
+
+Given the trainning set $\\{ (\mathbf{x}_1, \mathbf{y}_1), (\mathbf{x}_2, \mathbf{y}_2), \cdots, (\mathbf{x}_m, \mathbf{y}_m)\\}$, the cost function for this neural network can be written as:
+
+$$
+J=-\frac{1}{m}\sum_{t=1}^{m}(\mathbf{y}_t^{T}\cdot\log(\mathbf{y}_t^{pred})+(1-\mathbf{y}_t)^{T}\cdot\log(1-\mathbf{y}_t^{pred}))
+$$
+
