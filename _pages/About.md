@@ -3,7 +3,7 @@ layout: single
 title: "About"
 permalink: /About/
 comments: true
-author_profile: false
+author_profile: true
 ---
 
 
