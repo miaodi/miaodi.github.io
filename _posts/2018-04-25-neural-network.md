@@ -24,7 +24,7 @@ $$h(z)=\frac{1}{1+e^{-z}},$$
 
 which has a convenient derivative of:
 
-$$h'=h(z)(1-h(z)).$$
+$$h'(z)=h(z)(1-h(z)).$$
 
 We assume there are L layers of neural networks and label nodes of layer $i$ as $\mathbf{a}^{(i)}$ and call them "activation units". The output of the $i^{th}$ layer is the input of the $i+1^{th}$ layer. In the input layer,
 
