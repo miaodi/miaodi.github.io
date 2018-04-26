@@ -136,7 +136,7 @@ $$
 By mathematical induction, you may find 
 
 $$
- \frac{\partial{J}}{\partial{\theta^{(l)}_{ij}}}=\frac{1}{M}\left({a^{(L)}_{t,k}-y_{t,k}}\right)\lambda^{(L-1)}_{km}\lambda^{(L-2)}_{mn}\dots\lambda^{(l)}_{pi}a^{(l-1)}_{t,j}, \quad \forall{l\in\\{{1,2,\dots, L-1}\\}}.
+ \frac{\partial{J}}{\partial{\theta^{(l)}_{ij}}}=\frac{1}{M}\left({a^{(L)}_{t,k}-y_{t,k}}\right)\lambda^{(L-1)}_{km}\lambda^{(L-2)}_{mn}\dots\lambda^{(l)}_{pi}a^{(l-1)}_{t,j}, \quad \forall{l\in\\{1,2,\dots, L-1\\}}.
 $$
 
 For the regularized neural network, all you need to do is add the derivative of the regularization term *w.r.t.* the corresponding weights, which is a trivial task.
