@@ -57,7 +57,7 @@ $$
 \end{align*}
 $$
 
-Following the Einstein summation convention, the repeated indices are implicitly summed over their range.
+Following the Einstein summation convention, the repeated free indices are implicitly summed over their range.
 
 The goal of the neural network trainning process is to find the weights $\Theta^{(i)}$ for $i\in\\{1,2,\dots, L\\}$ such that the cost function approach its maximum for all trianning set. In order to find the maximum by using the gradient descent method, we need to evaluate $J(\Theta)$ as well as the gradient $\frac{\partial{J}}{\partial{\theta^{(l)}_{ij}}}$.
 
@@ -78,11 +78,29 @@ $$
 with
 
 $$
-  \frac{\partial{}z^{(L)}_{t,k}}{\partial{\theta^{(L)}_{ij}}} = \delta_{ik}a^{(L-1)}_{t,j}.
+  \frac{\partial{}z^{(L)}_{t,k}}{\partial{\theta^{(L)}_{ij}}} = \delta_{ik}\delta_{jl}a^{(L-1)}_{t,l} = \delta_{ik}a^{(L-1)}_{t,lj},
+$$
+where $\delta_{ij}$ is the [Kronecker delta](https://en.wikipedia.org/wiki/Kronecker_delta), with the property:
+
+$$
+\delta_{ij}=
+  \begin{cases}
+    0,\quad{i\neq{j}} \\
+    1,\quad{i={j}}
+  \end{cases}.
 $$
 
 Hence,
 
 $$
-  \frac{\partial{J}}{\partial{\theta^{(L)}_{ij}}}=\frac{1}{m}\left({a^{(L)}_{t,i}-y_{t,i}}\right)a^{(L-1)}_{t,j}.
+  \begin{align*}
+    \frac{\partial{J}}{\partial{\theta^{(L)}_{ij}}}&=\frac{1}{m}\left({a^{(L)}_{t,k}-y_{t,k}}\right)\delta_{ik}a^{(L-1)}_{t,j}\\
+    &=\frac{1}{m}\left({a^{(L)}_{t,i}-y_{t,i}}\right)a^{(L-1)}_{t,j}.
+  \end{align*}
+$$
+
+The above formulation is indeed the gradient for logistic regression without regularization term. Now, let's move one step ahead and find the derivatives of the cost function $J$ *w.r.t.* the weights $\theta^{(L-1)}_{ij}$. By the chain rule, we can use the formulation we derived above and write:
+
+$$
+  \frac{\partial{J}}{\partial{\theta^{(L-1)}_{ij}}}=\frac{1}{m}\left({a^{(L)}_{t,k}-y_{t,k}}\right)\frac{\partial{}z^{(L)}_{t,k}}{\partial{\theta^{(L-1)}_{ij}}}
 $$
