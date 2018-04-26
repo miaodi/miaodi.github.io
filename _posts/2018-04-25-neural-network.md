@@ -5,6 +5,7 @@ categories:
   - Machine Learning
 last_modified_at: 2018-04-25T08:05:34-05:00
 use_math: true
+comments: true
 ---
 
 ## Intro
