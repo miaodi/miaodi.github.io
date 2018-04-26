@@ -80,6 +80,7 @@ with
 $$
   \frac{\partial{}z^{(L)}_{t,k}}{\partial{\theta^{(L)}_{ij}}} = \delta_{ik}\delta_{jl}a^{(L-1)}_{t,l} = \delta_{ik}a^{(L-1)}_{t,j},
 $$
+
 where $\delta_{ij}$ is the [Kronecker delta](https://en.wikipedia.org/wiki/Kronecker_delta), with the property:
 
 $$
@@ -131,3 +132,11 @@ Following the same pattern, you can derive
 $$
  \frac{\partial{J}}{\partial{\theta^{(L-2)}_{ij}}}=\frac{1}{M}\left({a^{(L)}_{t,k}-y_{t,k}}\right)\lambda^{(L-1)}_{kl}\lambda^{(L-2)}_{li}a^{(L-3)}_{t,j}.
 $$
+
+By mathematical induction, you may find 
+
+$$
+ \frac{\partial{J}}{\partial{\theta^{(l)}_{ij}}}=\frac{1}{M}\left({a^{(L)}_{t,k}-y_{t,k}}\right)\lambda^{(L-1)}_{km}\lambda^{(L-2)}_{mn}\dots\lambda^{(l)}_{pi}a^{(l-1)}_{t,j}.
+$$
+
+For the regularized neural network, all you need to do is add the derivative of the regularization term *w.r.t.* the corresponding weights, which is a trivial task.
