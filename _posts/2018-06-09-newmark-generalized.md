@@ -70,10 +70,10 @@ $$
 \end{align*}
 $$
 
-where $\Omega=\omega\delta{t}$. The matrix $\mathbf{A}$ is called amplification matrix. The above formulation allows us to do time stepping by matrix multiplications as $$\mathbf{X}_{n+N}=\mathbf{A}^N\mathbf{X}_{n}$$. The stability requires that all eigenvalues of the amplification matrix should have magnitude that less than 1 so that any disturbance (in terms of $d$, $v$ or $a$) will be completely damped out. By solving the characteristic equation of $\mathbf{A}$, we can obtain three eigenvalues. By applying the magnitude constraint on these three eigenvalues, we can deduce the range of $\gamma$, $\beta$ and $\Omega$ (Indeed, what we really care about is the time step size $\delta{t}$.) that we are allowed to choose. You can use any symbolic math tool to solve this problem, the results are
+where $\Omega=\omega\delta{t}$. The matrix $\mathbf{A}$ is called amplification matrix. The above formulation allows us to do time stepping by matrix multiplications as $$\mathbf{X}_{n+N}=\mathbf{A}^N\mathbf{X}_{n}$$. The stability requires that all eigenvalues of the amplification matrix should have magnitude that less than 1 so that any disturbance (in terms of $d$, $v$ or $a$) will be completely damped out (at least not be magnified). By solving the characteristic equation of $\mathbf{A}$, we can obtain three eigenvalues. By applying the magnitude constraint on these three eigenvalues, we can deduce the range of $\gamma$, $\beta$ and $\Omega$ (Indeed, what we really care about is the time step size $\delta{t}$.) that we are allowed to choose. You can use any symbolic math tool to solve this problem, the results are
 
 * $2\beta\geq\gamma\geq\frac{1}{2}$ for all $\Omega\geq{}0$. In other words, it is stable for any choice of the time step size $\delta{t}$. This is also called unconditionally stable.
-* $\gamma\geq\frac{1}{2}$ && $\beta\leq\frac{\gamma}{2}$ && $\Omega\leq{\frac{2}{\gamma-2\beta}}$. This is also called conditionally stable, because there is additional constraint on the time step size.
+* $\gamma\geq\frac{1}{2}$ && $\beta\leq\frac{\gamma}{2}$ && $\Omega\leq{\frac{2}{\gamma-2\beta}}$. This is also called conditionally stable, because there is an additional constraint on the time step size.
 
 Because of the constraint on $\Omega$, sometimes we need to find the highest frequency $\omega$ in the finite element linear system to identify the largest feasible time step.
 
@@ -101,15 +101,7 @@ $$
 \end{equation*}
 $$
 
-The expression of coefficients $A_i$ are quit clumsy, and the derivation procedure is tedious, but again you can use symbolic math tools to do it very quickly. We end up wth the following equation
-
-$$
-\begin{equation*}
-  A_0d_{n}+A_1d_{n+1}+A_2d_{n+2}+A_2d_{n+3}=0.
-\end{equation*}
-$$
-
-By replacing numerical solution $d_{n+i}$ with exact solution $d(t_{n+i})$ and doing Taylor expansion on each displacement terms *w.r.t* $d(t_{n})$, we obtain the truncation error
+The expression of coefficients $A_i$ are quit clumsy, and the derivation procedure is tedious, but again you can use symbolic math tools to do it very quickly. By replacing numerical solution $d_{n+i}$ with exact solution $d(t_{n+i})$ and doing Taylor expansion on each displacement terms *w.r.t* $d(t_{n})$, we end up with the truncation error
 
 $$
 \begin{equation*}
@@ -126,3 +118,8 @@ $$
 $$
 
 the first order truncation error can be completely eliminated. As a result, we improve Newmark-$\beta$ to second order accuracy.
+
+<img style="float: left; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/newmark_d.gif">
+<img style="float: right; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/generalized_d.gif">
+<img style="float: left; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/newmark_v.gif"><img style="float: right; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/generalized_v.gif">
+<img style="float: left; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/newmark_a.gif"><img style="float: right; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/generalized_a.gif">
