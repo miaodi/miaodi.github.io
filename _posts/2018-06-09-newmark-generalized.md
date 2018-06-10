@@ -113,7 +113,7 @@ By replacing numerical solution $d_{n+i}$ with exact solution $d(t_{n+i})$ and d
 
 $$
 \begin{equation*}
-  \tau= -\frac{\Omega \left(4 \dddot{d}(t_n)+(2 \gamma +3) \omega^2 \dot{d}(t_n)\right)}{2\omega}.
+  \tau= -\frac{\Omega \left(4 \dddot{d}(t_n)+(2 \gamma +3) \omega^2 \dot{d}(t_n)\right)}{2\omega}+O(\Omega^2).
 \end{equation*}
 $$
 
