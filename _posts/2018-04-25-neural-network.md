@@ -8,7 +8,6 @@ use_math: true
 comments: true
 ---
 
-## Intro
 Neural networks are typically organized in layers. Layers are made up of a number of interconnected nodes which contain an activation function $h_\theta(z)$. Patterns $\mathbf{x}$ are presented to the network via the input layer, which communicates to one or more hidden layers where the actual processing is done via a system of weighted connections $\mathbf{\Theta}$.  The hidden layers then link to an output layer where the predict answer $\mathbf{y}^{pred}$ is output as shown in the graphic below.
 
 <figure style="width: 450px" class="align-center">

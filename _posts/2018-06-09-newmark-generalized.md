@@ -8,7 +8,6 @@ use_math: true
 comments: true
 ---
 
-## Intro
 
 Recently, I was working on solving some phase-field based fracture problems, where I need to do time marchings to let the fracture propagate in time domain. Taking this opportunity, I reviewed a bunch of numerical methods for ODEs. Different methods have different accuracies and are focused on different type of problems. Although Runge-Kutta method and Backward Euler method are well known to numerical people in their accuracy and stability,  in finite element field, people like to use Newmark-$\beta$ method and Generalized-$\alpha$ method. The reason is because these two methods allows to solve second order ODEs directly without introducing any state variables. Hence, I reviewed the performances of of these two methods in detail. In case I forget their properties later on, I'd like to document my study here.
 

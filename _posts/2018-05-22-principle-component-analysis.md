@@ -8,7 +8,7 @@ use_math: true
 comments: true
 ---
 
-## Intro
+
 
 <iframe src="http://js.cytoscape.org/demos/colajs-graph/" width="100%" height="340" seamless frameBorder="0" scrolling="no"></iframe>
 
