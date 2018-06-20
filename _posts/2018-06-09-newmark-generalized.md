@@ -100,7 +100,7 @@ $$
 \end{equation*}
 $$
 
-The expression of coefficients $A_i$ are quit clumsy, and the derivation procedure is tedious, but again you can use symbolic math tools to do it very quickly. By replacing numerical solution $d_{n+i}$ with exact solution $d(t_{n+i})$ and doing Taylor expansion on each displacement terms *w.r.t* $d(t_{n})$, we end up with the truncation error
+The expression of coefficients $A_i$ are quite clumsy, and the derivation procedure is tedious, but again you can use symbolic math tools to do it very quickly. By replacing numerical solution $d_{n+i}$ with exact solution $d(t_{n+i})$ and doing Taylor expansion on each displacement terms *w.r.t* $d(t_{n})$, we end up with the truncation error
 
 $$
 \begin{equation*}
@@ -123,14 +123,14 @@ the first order truncation error can be completely eliminated. As a result, we i
 Although Newmark-$\beta$ method had been widely used by FEA/CFD people, it has disadvantages which makes it less attractive and various methods nowadays have been proposed to replace it. The main issue for Newmark method is that there is no way to introduce numerical damping when $\gamma=\frac{1}{2}$. In dynamic problem, high frequency modes normally describe motions with no physical sense (also contains very large phase error), hence, algorithmic damping in the high frequency regime is desired.  
 <figure style="width: 450px" class="align-center">
 <img style="display: block; margin: 0 auto;" src="/assets/images/newmark_radii.svg">
-<figcaption>Spectral radii for Newmark-$\beta$ methods for varying $\gamma$ vs $\frac{\Delta{t}}{T}$(with $\beta=\frac{\gamma}{2}$).</figcaption>
+<figcaption>Spectral radii vs $\frac{\Delta{t}}{T}$ for Newmark-$\beta$ methods for varying $\gamma$ (with $\beta=\frac{\gamma}{2}$).</figcaption>
 </figure> 
 
 However, as demonstrated in the above figure, the spectral radious for $\gamma=\frac{1}{2}$ is $1$ for the entire spectral. By increasing $\gamma$, we observe dissipations in moderate frequency, but still no high frequency damping at all. 
 
-## Generalized-$\beta$ method
+## Generalized-$\alpha$ method
 
-Generalized-$\beta$ method is proposed by Chung and Hulbert. Its scheme is 
+Generalized-$\alpha$ method is proposed by Chung and Hulbert. Its scheme is 
 
 $$
 \begin{align*}
@@ -159,18 +159,78 @@ Hence, $\gamma=\frac{1}{2}-\alpha_m+\alpha_f$
 
 ### Stability
 
-By reducing $\mathbf{d}\_{n+1-\alpha_f}$, $\mathbf{v}\_{n+1-\alpha_f}$ and $\mathbf{a}\_{n+1-\alpha_m}$ and disregard the damping term, we can obtain the amplification matrix of generalized-$\alpha$ method for SDOF as:
+Since too many variables are involved in the amplification matrix $\mathbf{A}$, which will make the stability analysis a impossible mission. Hence, we simplify the problem by considering two extreme situations -- zero stable and infinity stable.
+
+#### Zero stable
+
+Here we consider the stability for $\Omega\rightarrow{0}$. 
 
 $$
 \begin{align*}
   \mathbf{A}=
-  \scriptsize\begin{bmatrix}
-     \frac{-\alpha _f \Omega ^2+\Omega ^2+2}{2 \left(-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1\right)}+1 & \frac{\Omega  \left(\Omega -\Omega  \alpha _f\right)}{-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1} & \frac{\Omega ^2}{-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1} \\
- \frac{(1-4 \beta ) \Omega ^2+2 \left(\alpha _f-1\right) \alpha _m \Omega ^2+\alpha _f \left((4 \beta +1) \Omega ^2-2 \alpha _f \Omega ^2+4\right)-2}{4 \left(-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1\right)} & \frac{(1-2 \beta ) \Omega ^2+\left(\alpha _f \left(2 \beta -2 \alpha _f+1\right)+2 \left(\alpha _f-1\right) \alpha _m\right) \Omega ^2+2 \alpha _m-2}{2 \left(-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1\right)} & \frac{\Omega ^2 \left(2 \alpha _f-2 \alpha _m+1\right)}{2 \left(-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1\right)} \\
- \frac{2 \beta +\alpha _m-1}{2 \left(-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1\right)} & \frac{\alpha _m-1}{-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1} & \frac{\beta  \Omega ^2}{-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1}+1
+  \begin{bmatrix}
+    1+\frac{1}{\alpha _m-1} & 0 & 0 \\
+    \frac{\gamma }{\alpha _m-1}+1 & 1 & 0 \\
+    \frac{2 \beta +\alpha _m-1}{2 \left(\alpha _m-1\right)} & 1 & 1 
   \end{bmatrix}
 \end{align*}
 $$
+
+Three roots of the characterist equation of the above amplification matrix are $\lambda\_1^0,\lambda\_2^0=1$, $\lambda\_3^0=\frac{\alpha _f}{\alpha _f-1}$, which indicates a stability constraint $\alpha _f\leq{\frac{1}{2}}$.
+
+#### Infinity stable
+
+Here we consider the stability for $\Omega\rightarrow{\infty}$. 
+
+$$
+\begin{align*}
+  \mathbf{A}=
+  \begin{bmatrix}
+    1-\frac{1}{2 \beta } & -\frac{1}{\beta } & \frac{1}{\beta  \left(\alpha _f-1\right)} \\
+    1-\frac{\gamma }{2 \beta } & 1-\frac{\gamma }{\beta } & \frac{\gamma }{\beta  \left(\alpha _f-1\right)} \\
+    0 & 0 & \frac{\alpha _f}{\alpha _f-1}
+  \end{bmatrix}
+\end{align*}
+$$
+
+Three roots are $\lambda\_1^\infty=\frac{\alpha _f}{\alpha _f-1}$, $\lambda\_2^\infty,\lambda\_3^\infty=\frac{4 \beta -2 \gamma -1\pm\sqrt{(2 \gamma +1)^2-16 \beta }}{4 \beta }$, respectively. If the roots $\lambda\_2^\infty,\lambda\_3^\infty$ are complex conjugates, we have $\vert\lambda_1\vert\leq{}1$ && $\lambda\_2\lambda\_3<{1}$ $\rightarrow{\alpha _m<\alpha _f\leq{\frac{1}{2}}}$. If the roots $\lambda\_2^\infty,\lambda\_3^\infty$ are real numbers, the stability constraints are given by $\gamma >\frac{1}{2}$, $\frac{\gamma }{2}\leq \beta \leq \frac{1}{16} \left(4 \gamma ^2+4 \gamma +1\right)$. As a result, for second order accuracy, the generalized-$\alpha$ method is unconditionally stable, provided
+
+$$
+\begin{align*}
+    \alpha _m<\alpha _f\leq{\frac{1}{2}}\quad \beta\geq{\frac{1}{4}+\frac{1}{2}(\alpha_f-\alpha_m)}.
+\end{align*}
+$$
+
+### Dissipation
+
+Ideally, a good algorithm should maintain low frequency modes and minimize the effect of high frequency modes. In the stability analysis, we observed that $\lambda\_1^0,\lambda\_2^0=1$, which means low frequency modes are preserved. How, we take $\lambda^\infty$ as a new design variable for the choice of numerical parameters.
+
+From the original paper, it says 'High-frequency dissipation is maximized if the principal roots become real in the high-frequency limit (which I don't quite understand yet.). Hence, we can find
+
+$$
+\begin{align*}
+    \sqrt{(2 \gamma +1)^2-16 \beta }= 0 \rightarrow \beta = \frac{1}{4}(1-\alpha_m+\alpha_f)^2.
+\end{align*}
+$$
+
+The three roots can be rewritten as: $\lambda\_1^\infty=\frac{\alpha _f}{\alpha _f-1}$, $\lambda\_2^\infty,\lambda\_3^\infty=\frac{\alpha_f-\alpha_m-1}{\alpha_f-\alpha_m+1}$. By requiring $\lambda\_1^\infty=\lambda\_2^\infty=\lambda\_3^\infty=\lambda^\infty$, we find
+
+$$
+\begin{align*}
+    \alpha_m=\frac{2\lambda^\infty-1}{\lambda^\infty+1}\quad \alpha_f=\frac{\lambda^\infty}{\lambda^\infty+1}.
+\end{align*}
+$$
+
+Now, we look at the spectral radii of Generalized-$\alpha$ method below, it provides more favorable behavior.
+
+<figure style="width: 450px" class="align-center">
+<img style="display: block; margin: 0 auto;" src="/assets/images/generalized_radii.svg">
+<figcaption>Spectral radii vs $\frac{\Delta{t}}{T}$ for Generalized-$\alpha$ method with $\lambda^\infty=0$.</figcaption>
+</figure> 
+
+## A simple example
+
+
 
 <img style="float: left; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/newmark_d.gif"><img style="float: right; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/generalized_d.gif">
 <img style="float: left; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/newmark_v.gif"><img style="float: right; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/generalized_v.gif">
