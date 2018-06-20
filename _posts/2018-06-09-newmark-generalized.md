@@ -118,7 +118,61 @@ $$
 
 the first order truncation error can be completely eliminated. As a result, we improve Newmark-$\beta$ to second order accuracy.
 
-<img style="float: left; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/newmark_d.gif">
-<img style="float: right; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/generalized_d.gif">
+### Issues
+
+Although Newmark-$\beta$ method had been widely used by FEA/CFD people, it has disadvantages which makes it less attractive and various methods nowadays have been proposed to replace it. The main issue for Newmark method is that there is no way to introduce numerical damping when $\gamma=\frac{1}{2}$. In dynamic problem, high frequency modes normally describe motions with no physical sense (also contains very large phase error), hence, algorithmic damping in the high frequency regime is desired.  
+<figure style="width: 450px" class="align-center">
+<img style="display: block; margin: 0 auto;" src="/assets/images/newmark_radii.svg">
+<figcaption>Spectral radii for Newmark-$\beta$ methods for varying $\gamma$ vs $\frac{\Delta{t}}{T}$(with $\beta=\frac{\gamma}{2}$).</figcaption>
+</figure> 
+
+However, as demonstrated in the above figure, the spectral radious for $\gamma=\frac{1}{2}$ is $1$ for the entire spectral. By increasing $\gamma$, we observe dissipations in moderate frequency, but still no high frequency damping at all. 
+
+## Generalized-$\beta$ method
+
+Generalized-$\beta$ method is proposed by Chung and Hulbert. Its scheme is 
+
+$$
+\begin{align*}
+  \mathbf{M}{\mathbf{a}}_{n+1-\alpha_m}+\mathbf{C}{\mathbf{v}}_{n+1-\alpha_f}+\mathbf{K}{\mathbf{d}_{n+1-\alpha_f}}&=\mathbf{f}_{n+1-\alpha_f}\\
+  \mathbf{d}_{n+1}&=\mathbf{d}_{n}+\delta{t}\mathbf{v}_{n}+\frac{\delta{t}^2}{2}\left({\left(1-2\beta\right)\mathbf{a}_{n}+2\beta{\mathbf{a}_{n+1}}}\right)\\
+  \mathbf{v}_{n+1}&=\mathbf{v}_{n}+\delta{t}\left({\left(1-\gamma\right)\mathbf{a}_{n}+\gamma{\mathbf{a}_{n+1}}}\right)\\
+  \mathbf{d}_{n+1-\alpha_f}&=(1-\alpha_f)\mathbf{d}_{n+1}+\alpha_f\mathbf{d}_{n}\\
+  \mathbf{v}_{n+1-\alpha_f}&=(1-\alpha_f)\mathbf{v}_{n+1}+\alpha_f\mathbf{v}_{n}\\
+  \mathbf{a}_{n+1-\alpha_m}&=(1-\alpha_m)\mathbf{a}_{n+1}+\alpha_m\mathbf{a}_{n}
+\end{align*}
+$$
+
+Following the similar paradigm, we now derive the constraints on parameters by considering the stability and accuracy of the algorithm.
+
+### Accuracy
+
+By reducing $\mathbf{d}\_{n+1-\alpha_f}$, $\mathbf{v}\_{n+1-\alpha_f}$ and $\mathbf{a}\_{n+1-\alpha_m}$ and disregard the damping term, we can obtain the truncation error
+
+$$
+\begin{equation*}
+  \tau= \frac{\Omega \left(  (4 - 2\alpha_m)\dddot{d}(t_n)+(2 \gamma -2 \alpha_f+3) \omega^2 \dot{d}(t_n)\right)}{2\omega(\alpha_m-1)}+O(\Omega^2).
+\end{equation*}
+$$
+
+Hence, $\gamma=\frac{1}{2}-\alpha_m+\alpha_f$
+
+### Stability
+
+By reducing $\mathbf{d}\_{n+1-\alpha_f}$, $\mathbf{v}\_{n+1-\alpha_f}$ and $\mathbf{a}\_{n+1-\alpha_m}$ and disregard the damping term, we can obtain the amplification matrix of generalized-$\alpha$ method for SDOF as:
+
+$$
+\begin{align*}
+  \mathbf{A}=
+  \scriptsize\begin{bmatrix}
+     \frac{-\alpha _f \Omega ^2+\Omega ^2+2}{2 \left(-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1\right)}+1 & \frac{\Omega  \left(\Omega -\Omega  \alpha _f\right)}{-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1} & \frac{\Omega ^2}{-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1} \\
+ \frac{(1-4 \beta ) \Omega ^2+2 \left(\alpha _f-1\right) \alpha _m \Omega ^2+\alpha _f \left((4 \beta +1) \Omega ^2-2 \alpha _f \Omega ^2+4\right)-2}{4 \left(-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1\right)} & \frac{(1-2 \beta ) \Omega ^2+\left(\alpha _f \left(2 \beta -2 \alpha _f+1\right)+2 \left(\alpha _f-1\right) \alpha _m\right) \Omega ^2+2 \alpha _m-2}{2 \left(-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1\right)} & \frac{\Omega ^2 \left(2 \alpha _f-2 \alpha _m+1\right)}{2 \left(-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1\right)} \\
+ \frac{2 \beta +\alpha _m-1}{2 \left(-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1\right)} & \frac{\alpha _m-1}{-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1} & \frac{\beta  \Omega ^2}{-\beta  \Omega ^2+\beta  \alpha _f \Omega ^2+\alpha _m-1}+1
+  \end{bmatrix}
+\end{align*}
+$$
+
+<img style="float: left; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/newmark_d.gif"><img style="float: right; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/generalized_d.gif">
 <img style="float: left; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/newmark_v.gif"><img style="float: right; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/generalized_v.gif">
 <img style="float: left; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/newmark_a.gif"><img style="float: right; width: 305px;" src="{{ site.url }}{{ site.baseurl }}/assets/images/generalized_a.gif">
+
